@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IndicatorView">
+        <attr name="count" format="integer" />
+        <attr name="click_color" format="color" />
+        <attr name="circle_color" format="color" />
+        <attr name="radius" format="dimension" />
+        <attr name="scale" format="float" />
+        <attr name="duration" format="integer" />
+        <attr name="clickable" format="boolean" />
+        <attr name="colors" format="reference" />
+    </declare-styleable>
+</resources>

@@ -1,1 +1,1 @@
-include ':app', ':dropindicator'
+include ':app',  ':indicatorview'

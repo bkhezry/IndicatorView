@@ -5,4 +5,14 @@
     <color name="colorAccent">#FF4081</color>
     <color name="xx">#00ffff</color>
     <color name="jj">#21293A</color>
+    <array name="colors">
+        <item>#FCC04D</item>
+        <item>#00C3E2</item>
+        <item>#FE626D</item>
+        <item>#966ACF</item>
+    </array>
+    app:color1=
+    app:color2=
+    app:color3=
+    app:color4=
 </resources>
