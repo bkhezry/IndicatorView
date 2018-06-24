@@ -1,19 +1,19 @@
-# DropIndicator
+# IndicatorView
 ## gif
-<img src="https://github.com/Ulez/DropIndicator/blob/master/screenshots/view.gif" width = "300" height = "507.6" align=center />
+<img src="https://github.com/bkhezry/IndicatorView/blob/master/screenshots/view.gif" width = "300" height = "507.6" align=center />
 
 ## Usage
 
 ##### Step 1
 
 ```java
-compile 'com.github.ulez:dropindicator:0.0.2'
+compile ''
 ```
 
 ##### Step 2
 
 ```xml
-    <comulez.github.droplibrary.DropIndicator
+    <com.github.bkhezry.indoctorview.IndicatorView
         android:background="@color/colorPrimary"
         android:id="@+id/circleIndicator"
         android:layout_width="match_parent"
@@ -21,10 +21,7 @@ compile 'com.github.ulez:dropindicator:0.0.2'
         android:layout_alignParentBottom="true"
         app:circle_color="@android:color/darker_gray"
         app:click_color="#fafafa"
-        app:color1="#FCC04D"
-        app:color2="#00C3E2"
-        app:color3="#FE626D"
-        app:color4="#966ACF"
+        app:colors="@array/colors"
         app:duration="800"
         app:radius="14dp"
         app:scale="0.5">
@@ -33,10 +30,8 @@ compile 'com.github.ulez:dropindicator:0.0.2'
             android:layout_height="wrap_content"
             android:src="@drawable/msg" />
             ........
-    </comulez.github.droplibrary.DropIndicator>
+    </com.github.bkhezry.indoctorview.IndicatorView>
 ```
-
-[Blog博客](http://blog.csdn.net/s122ktyt/article/details/55798658) 
 
 ## Lisence:
 
