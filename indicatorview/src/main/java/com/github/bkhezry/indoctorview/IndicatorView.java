@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -131,6 +132,7 @@ public class IndicatorView extends ViewGroup {
       p3 = new YPoint(0, -radius, mc);
       p2 = new XPoint(radius, 0, mc);
       p4 = new XPoint(-radius, 0, mc);
+      startAniTo(currentPos, mViewPager.getCurrentItem());
     }
     super.onSizeChanged(w, h, oldw, oldh);
   }
@@ -230,21 +232,23 @@ public class IndicatorView extends ViewGroup {
   }
 
   private void resetP() {
-    p1.setY(radius);
-    p1.setX(0);
-    p1.setMc(mc);
+    if (p1 != null && p2 != null && p3 != null && p4 != null) {
+      p1.setY(radius);
+      p1.setX(0);
+      p1.setMc(mc);
 
-    p3.setY(-radius);
-    p3.setX(0);
-    p3.setMc(mc);
+      p3.setY(-radius);
+      p3.setX(0);
+      p3.setMc(mc);
 
-    p2.setY(0);
-    p2.setX(radius);
-    p2.setMc(mc);
+      p2.setY(0);
+      p2.setX(radius);
+      p2.setMc(mc);
 
-    p4.setY(0);
-    p4.setX(-radius);
-    p4.setMc(mc);
+      p4.setY(0);
+      p4.setX(-radius);
+      p4.setMc(mc);
+    }
   }
 
   private void goo() {
@@ -611,6 +615,7 @@ public class IndicatorView extends ViewGroup {
     return Color.rgb((int) result[0], (int) result[1], (int) result[2]);
   }
 
+  public void setPosition(final int position) {
+    startAniTo(currentPos, position);
+  }
 }
-
-

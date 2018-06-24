@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.github.bkhezry.indoctorview.IndicatorView;
 import com.github.bkhezry.indoctorview.MyViewPager;
@@ -41,5 +43,23 @@ public class MainActivity extends AppCompatActivity {
     mViewPager.setOffscreenPageLimit(4);
     mViewPager.setAdapter(mAdapter);
     circleIndicator.setViewPager(mViewPager);
+    mViewPager.setCurrentItem(mAdapter.getCount() - 1);
+
+    Button next = findViewById(R.id.next);
+    next.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+        circleIndicator.setPosition(mViewPager.getCurrentItem());
+      }
+    });
+    Button previous = findViewById(R.id.previous);
+    previous.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        circleIndicator.setPosition(mViewPager.getCurrentItem());
+      }
+    });
   }
 }

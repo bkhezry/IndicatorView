@@ -25,7 +25,7 @@
         app:clickable="false"
         app:colors="@array/colors"
         app:count="4"
-        app:duration="800"
+        app:duration="400"
         app:radius="14dp"
         app:scale="1">
 
@@ -50,5 +50,20 @@
             android:src="@drawable/msg" />
 
     </com.github.bkhezry.indoctorview.IndicatorView>
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mViewPager"
+        android:layout_centerHorizontal="true"
+        android:text="Next" />
 
+    <Button
+        android:id="@+id/previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mViewPager"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/next"
+        android:text="Previous" />
 </RelativeLayout>
