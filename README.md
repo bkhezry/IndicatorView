@@ -1,5 +1,6 @@
 # IndicatorView
-## gif
+[![](https://jitpack.io/v/bkhezry/IndicatorView.svg)](https://jitpack.io/#bkhezry/IndicatorView)
+
 <img src="https://github.com/bkhezry/IndicatorView/blob/master/screenshots/view.gif" width = "300" height = "507.6" align=center />
 
 ## Usage
@@ -18,7 +19,7 @@ allprojects {
 Add the dependency
 ```java
 dependencies {
-	        implementation 'com.github.bkhezry:IndicatorView:1.0.1'
+	        implementation 'com.github.bkhezry:IndicatorView:1.0.3'
 	}
 ```
 
