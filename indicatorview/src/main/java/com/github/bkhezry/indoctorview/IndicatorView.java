@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -53,12 +52,6 @@ public class IndicatorView extends ViewGroup {
   private int currentPos = 0;
   private int toPos = -1;
   private ViewPager mViewPager;
-  private ViewPager.OnPageChangeListener onPageChangeListener;
-  private int viewPagerState;
-  public static final int SCROLL_STATE_IDLE = 0;
-  public static final int SCROLL_STATE_DRAGGING = 1;
-  public static final int SCROLL_STATE_SETTLING = 2;
-  private String TAG = "DropIndicator";
   private boolean animating;
   @ColorInt
   int[] colorArray = {
@@ -132,7 +125,12 @@ public class IndicatorView extends ViewGroup {
       p3 = new YPoint(0, -radius, mc);
       p2 = new XPoint(radius, 0, mc);
       p4 = new XPoint(-radius, 0, mc);
-      startAniTo(currentPos, mViewPager.getCurrentItem());
+      if (mViewPager != null) {
+        int tempDuration = duration;
+        duration = 0;
+        startAniTo(currentPos, mViewPager.getCurrentItem());
+        duration = tempDuration;
+      }
     }
     super.onSizeChanged(w, h, oldw, oldh);
   }
@@ -216,6 +214,8 @@ public class IndicatorView extends ViewGroup {
 
         }
       });
+    } else {
+      animator.setDuration(duration);
     }
     animator.start();
     if (mViewPager != null) {
@@ -419,18 +419,10 @@ public class IndicatorView extends ViewGroup {
           e.printStackTrace();
         }
 
-        if (onPageChangeListener != null) {
-          onPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        }
-
       }
 
       @Override
       public void onPageScrollStateChanged(int state) {
-        viewPagerState = state;
-        if (onPageChangeListener != null) {
-          onPageChangeListener.onPageScrollStateChanged(state);
-        }
       }
     });
   }
