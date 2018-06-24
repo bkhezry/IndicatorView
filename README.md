@@ -33,6 +33,6 @@ compile ''
     </com.github.bkhezry.indoctorview.IndicatorView>
 ```
 
-## Lisence:
+## License:
 
-Lisenced under [Apache 2.0 lisence](http://opensource.org/licenses/Apache-2.0)
+License under [Apache 2.0 License](http://opensource.org/licenses/Apache-2.0)
