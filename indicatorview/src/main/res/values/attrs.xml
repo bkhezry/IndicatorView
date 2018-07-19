@@ -9,5 +9,6 @@
         <attr name="duration" format="integer" />
         <attr name="clickable" format="boolean" />
         <attr name="colors" format="reference" />
+        <attr name="rtl" format="boolean" />
     </declare-styleable>
 </resources>

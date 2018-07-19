@@ -20,8 +20,6 @@ import comulez.github.droplibrary.R;
 
 
 public class IndicatorView extends ViewGroup {
-  private int circleColor;
-  private int clickColor;
   private Paint mClickPaint;
   private int duration;
   private Paint mPaintCircle;
@@ -29,14 +27,9 @@ public class IndicatorView extends ViewGroup {
   private Path mPath = new Path();
   private float ratio = 50;
   private final double c = 0.552284749831;
-  private final int r = 1;
-  private int mWidth;
-  private int mHeight;
   private float startX;
   private int startY;
-  private float totalOff;
   private float distance;
-  private int currOff;
   private float mCurrentTime;
   private int tabNum = 0;
   private XPoint p2, p4;
@@ -46,12 +39,11 @@ public class IndicatorView extends ViewGroup {
   private int[] roundColors = new int[4];
   private float div;
   private float scale = 0.8f;
-  private boolean clickable = false;
   private int count = 4;
-
+  private boolean rtl = false;
+  private boolean clickable = false;
   private int currentPos = 0;
   private int toPos = -1;
-  private ViewPager mViewPager;
   private boolean animating;
   @ColorInt
   int[] colorArray = {
@@ -78,11 +70,13 @@ public class IndicatorView extends ViewGroup {
     for (int i = 0; i < count; i++) {
       roundColors[i] = colorResValues.getColor(i, colorArray[i]);
     }
-    clickColor = typedArray.getColor(R.styleable.IndicatorView_click_color, Color.WHITE);
-    circleColor = typedArray.getColor(R.styleable.IndicatorView_circle_color, Color.GRAY);
+    int clickColor = typedArray.getColor(R.styleable.IndicatorView_click_color, Color.WHITE);
+    int circleColor = typedArray.getColor(R.styleable.IndicatorView_circle_color, Color.GRAY);
     radius = typedArray.getDimension(R.styleable.IndicatorView_radius, 50);
     duration = typedArray.getInteger(R.styleable.IndicatorView_duration, 1000);
     scale = typedArray.getFloat(R.styleable.IndicatorView_scale, 0.8f);
+    rtl = typedArray.getBoolean(R.styleable.IndicatorView_rtl, false);
+    clickable = typedArray.getBoolean(R.styleable.IndicatorView_clickable, false);
     typedArray.recycle();
     f = new float[roundColors.length][3];
     result = new float[3];
@@ -106,29 +100,27 @@ public class IndicatorView extends ViewGroup {
     mPaint.setStyle(Paint.Style.FILL);
     mPaint.setStrokeWidth(1);
     mPaint.setAntiAlias(true);
+    colorResValues.recycle();
   }
 
 
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-    mWidth = w;
-    mHeight = h;
-    div = (mWidth - 2 * tabNum * radius) / (tabNum + 1);
+    div = (w - 2 * tabNum * radius) / (tabNum + 1);
     startX = div + radius;
-    startY = mHeight / 2;
-    totalOff = (tabNum - 1) * (2 * radius + div) - radius;
-
+    startY = h / 2;
     if (currentPos == 0) {
+      int r = 1;
       radius = r * ratio;
       mc = (float) (c * ratio);
       p1 = new YPoint(0, radius, mc);
       p3 = new YPoint(0, -radius, mc);
       p2 = new XPoint(radius, 0, mc);
       p4 = new XPoint(-radius, 0, mc);
-      if (mViewPager != null) {
+      if (rtl) {
         int tempDuration = duration;
         duration = 0;
-        startAniTo(currentPos, mViewPager.getCurrentItem());
+        startAniTo(currentPos, count - 1);
         duration = tempDuration;
       }
     }
@@ -162,11 +154,14 @@ public class IndicatorView extends ViewGroup {
 
   ValueAnimator animator;
 
-  private boolean startAniTo(int currentPos, int toPos) {
+  private void startAniTo(int currentPos, int toPos) {
+    if (toPos > count - 1 || toPos < 0) {
+      return;
+    }
     this.currentPos = currentPos;
     this.toPos = toPos;
     if (currentPos == toPos) {
-      return true;
+      return;
     }
     startColor = roundColors[(this.currentPos) % 4];
     endColor = roundColors[(toPos) % 4];
@@ -190,21 +185,18 @@ public class IndicatorView extends ViewGroup {
         @Override
         public void onAnimationStart(Animator animation) {
           animating = true;
-          setTouchAble(!animating);
         }
 
         @Override
         public void onAnimationEnd(Animator animation) {
           goo();
           animating = false;
-          setTouchAble(!animating);
         }
 
         @Override
         public void onAnimationCancel(Animator animation) {
           goo();
           animating = false;
-          setTouchAble(!animating);
           mCurrentTime = 1;
           invalidate();
         }
@@ -218,17 +210,6 @@ public class IndicatorView extends ViewGroup {
       animator.setDuration(duration);
     }
     animator.start();
-    if (mViewPager != null) {
-      mViewPager.setCurrentItem(toPos);
-    }
-
-    return true;
-  }
-
-  private void setTouchAble(boolean touchAble) {
-    if (mViewPager instanceof Touchable) {
-      ((Touchable) mViewPager).setTouchable(touchAble);
-    }
   }
 
   private void resetP() {
@@ -340,7 +321,6 @@ public class IndicatorView extends ViewGroup {
       }
     }
     if (mCurrentTime == 1) {
-      lastCurrentTime = 0;
       mPaint.setColor(endColor);
       if (direction) {
         p1.setX(radius);
@@ -374,15 +354,11 @@ public class IndicatorView extends ViewGroup {
     super.dispatchDraw(canvas);
   }
 
-  private double g2 = 1.41421;
-
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
     int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
-    int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
-    int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
     tabNum = getChildCount();
     for (int i = 0; i < tabNum; i++) {
       View child = getChildAt(i);
@@ -396,72 +372,11 @@ public class IndicatorView extends ViewGroup {
     tabNum = getChildCount();
     for (int i = 0; i < tabNum; i++) {
       View child = getChildAt(i);
+      double g2 = 1.41421;
       child.layout((int) (div + (1 - scale * 1 / g2) * radius + i * (div + 2 * radius)), (int) (startY - scale * radius / g2), (int) (div + (1 + scale * 1 / g2) * radius + i * (div + 2 * radius)), (int) (startY + scale * radius / g2));
     }
   }
 
-  public void setViewPager(ViewPager viewPager) {
-    this.mViewPager = viewPager;
-    viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-      @Override
-      public void onPageSelected(int position) {
-
-      }
-
-      @Override
-      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        try {
-          if (!animating) {
-            updateDrop(position, positionOffset, positionOffsetPixels);
-          }
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-
-      }
-
-      @Override
-      public void onPageScrollStateChanged(int state) {
-      }
-    });
-  }
-
-  float lastCurrentTime = 0;
-
-  private void updateDrop(int position, float positionOffset, int positionOffsetPixels) {
-    if (animator != null) {
-      animator.cancel();
-    }
-    if ((position + positionOffset) - currentPos > 0) {
-      direction = true;
-    } else if ((position + positionOffset) - currentPos < 0) {
-      direction = false;
-    }
-    if (direction) {
-      toPos = currentPos + 1;
-    } else {
-      toPos = currentPos - 1;
-    }
-    startColor = roundColors[(currentPos) % 4];
-    endColor = roundColors[(currentPos + (direction ? 1 : -1)) % 4];
-    startX = div + radius + (currentPos) * (div + 2 * radius);
-    distance = direction ? ((2 * radius + div) + (direction ? -radius : radius)) : (-(2 * radius + div) + (direction ? -radius : radius));
-    mCurrentTime = position + positionOffset - (int) (position + positionOffset);
-    if (!direction) {
-      mCurrentTime = 1 - mCurrentTime;
-    }
-    if (Math.abs(lastCurrentTime - mCurrentTime) > 0.2) {
-      if (lastCurrentTime < 0.1) {
-        mCurrentTime = 0;
-      } else if (lastCurrentTime > 0.9) {
-        mCurrentTime = 1;
-      }
-    }
-
-    lastCurrentTime = mCurrentTime;
-    invalidate();
-  }
 
   class XPoint {
     public float x;
@@ -574,11 +489,6 @@ public class IndicatorView extends ViewGroup {
     }
   }
 
-  public int dip2px(Context mContext, float dpValue) {
-    final float scale = mContext.getResources().getDisplayMetrics().density;
-    return (int) (dpValue * scale + 0.5f);
-  }
-
   float[][] f;
   float[] result;
   int[] colors = new int[4];
@@ -607,7 +517,11 @@ public class IndicatorView extends ViewGroup {
     return Color.rgb((int) result[0], (int) result[1], (int) result[2]);
   }
 
-  public void setPosition(final int position) {
+  public void setPositionWithAnim(int position) {
     startAniTo(currentPos, position);
+  }
+
+  public int getCurrentPos() {
+    return this.currentPos;
   }
 }

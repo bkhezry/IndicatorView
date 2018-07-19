@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     };
     mViewPager.setOffscreenPageLimit(4);
     mViewPager.setAdapter(mAdapter);
-    circleIndicator.setViewPager(mViewPager);
     mViewPager.setCurrentItem(mAdapter.getCount() - 1);
 
     Button next = findViewById(R.id.next);
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-        circleIndicator.setPosition(mViewPager.getCurrentItem());
+        circleIndicator.setPositionWithAnim(circleIndicator.getCurrentPos() - 1);
       }
     });
     Button previous = findViewById(R.id.previous);
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-        circleIndicator.setPosition(mViewPager.getCurrentItem());
+        circleIndicator.setPositionWithAnim(circleIndicator.getCurrentPos() + 1);
       }
     });
   }
