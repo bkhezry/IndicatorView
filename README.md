@@ -19,7 +19,7 @@ allprojects {
 Add the dependency
 ```java
 dependencies {
-	        implementation 'com.github.bkhezry:IndicatorView:1.0.3'
+	        implementation 'com.github.bkhezry:IndicatorView:1.0.4'
 	}
 ```
 
