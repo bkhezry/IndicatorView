@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-  private MyViewPager mViewPager;
   private IndicatorView circleIndicator;
   private FragmentPagerAdapter mAdapter;
   private ArrayList<Fragment> mTabContents = new ArrayList<>();
@@ -23,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    mViewPager = findViewById(R.id.mViewPager);
     circleIndicator = findViewById(R.id.circleIndicator);
     mTabContents.add(BlankFragment.newInstance("0", 0));
     mTabContents.add(BlankFragment.newInstance("1", 1));
@@ -40,15 +38,11 @@ public class MainActivity extends AppCompatActivity {
         return mTabContents.get(position);
       }
     };
-    mViewPager.setOffscreenPageLimit(4);
-    mViewPager.setAdapter(mAdapter);
-    mViewPager.setCurrentItem(mAdapter.getCount() - 1);
 
     Button next = findViewById(R.id.next);
     next.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
         circleIndicator.setPositionWithAnim(circleIndicator.getCurrentPos() - 1);
       }
     });
@@ -56,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     previous.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
         circleIndicator.setPositionWithAnim(circleIndicator.getCurrentPos() + 1);
       }
     });
