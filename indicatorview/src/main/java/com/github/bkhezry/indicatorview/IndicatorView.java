@@ -1,4 +1,4 @@
-package com.github.bkhezry.indoctorview;
+package com.github.bkhezry.indicatorview;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.support.annotation.ColorInt;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -213,7 +212,6 @@ public class IndicatorView extends ViewGroup {
   }
 
   private void resetP() {
-    if (p1 != null && p2 != null && p3 != null && p4 != null) {
       p1.setY(radius);
       p1.setX(0);
       p1.setMc(mc);
@@ -229,7 +227,6 @@ public class IndicatorView extends ViewGroup {
       p4.setY(0);
       p4.setX(-radius);
       p4.setMc(mc);
-    }
   }
 
   private void goo() {
